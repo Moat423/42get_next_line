@@ -1,0 +1,12 @@
+*/*.o
+*/*.out
+*.out
+*.swp
+*.o
+en.subject.pdf
+*/*.a
+*.a
+*/*.gch
+*.gch
+README.md
+

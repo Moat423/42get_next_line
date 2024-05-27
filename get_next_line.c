@@ -1,14 +1,21 @@
-#include <stdlib.h>
-#include <unistd.h>
-// #include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmeubrin <lmeubrin@student.42berlin.       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/27 11:45:47 by lmeubrin          #+#    #+#             */
+/*   Updated: 2024/05/27 12:56:59 by lmeubrin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 10
-#endif
+#include "get_next_line.h"
 
-char *ft_substr(char *src, unsigned int len) {
-	char *dest;
-	unsigned int i;
+char	*ft_substr(char *src, unsigned int len)
+{
+	char			*dest;
+	unsigned int	i;
 
 	i = 0;
 	dest = malloc(len + 1);
@@ -17,12 +24,12 @@ char *ft_substr(char *src, unsigned int len) {
 	while (src[i] && i < len)
 		dest[i] = src[i];
 	dest[i] = '\0';
-		return (dest);
+	return (dest);
 }
 
 unsigned int	ft_strlen(char *str)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 0;
 	while (str[i] && str[i] != '\n')
@@ -30,17 +37,30 @@ unsigned int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_strlcpy(char *dest, char *src, unsigned int len)
+int	ft_memmove(char *dest, char *src)
 {
 	int	i;
 
 	i = 0;
 	if (!dest)
 		return (-1);
-	while (src[i] && i < len)
+	while (src[i])
 		dest[i] = src[i];
 	dest[i] = '\0';
 	return (ft_strlen(src));
+}
+
+char	*free_str(char *str)
+{
+	free(str);
+	return (NULL);
+}
+
+char	*make_rightside(char *buffer)
+{
+	char	*rest;
+
+	return (rest);
 }
 
 char	*make_line(char *buffer)
@@ -50,18 +70,19 @@ char	*make_line(char *buffer)
 	char			*rightside;
 	unsigned int	i;
 
-	i = ft_strlen(buffer);
+	len = ft_strlen(buffer);
+	line = ft_substr(buffer, BUFFER_SIZE);
+	if (!line)
+		return (free_str(line));
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
 	if (buffer[i] == '\n')
 	{
-		line = ft_substr(buffer, i + 1);
-		rightside = ft_substr(buffer + i + 1, len - i);
+		ft_memmove(buffer, buffer + i + 1);
+		line[i + 1] = '\0';
 		free(buffer);
-		if (!line || !rightside)
-		{
-			free(line);
-			free(rightside);
-			return (NULL);
-		}
+		if (!rightside)
+			return (free_str(rightside));
 	}
 	else
 	{
@@ -81,11 +102,11 @@ char	*make_line(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	char *line;
-	static char *buffer;
-	char *rightside;
-	unsigned int i;
-	unsigned int len;
+	char			*line;
+	static char		*buffer;
+	char			*rightside;
+	unsigned int	i;
+	unsigned int	len;
 
 	if (BUFFER_SIZE <= 0)
 		return (0);
