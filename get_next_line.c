@@ -21,7 +21,7 @@ char	*ft_substr(char *src, unsigned int len)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
-	while (src[i] && i < len)
+	while (src[i] && i++ < len)
 		dest[i] = src[i];
 	dest[i] = '\0';
 	return (dest);
@@ -32,6 +32,8 @@ unsigned int	ft_strlen(char *str)
 	unsigned int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] && str[i] != '\n')
 		i++;
 	return (i);
@@ -44,9 +46,10 @@ int	ft_memmove(char *dest, char *src)
 	i = 0;
 	if (!dest)
 		return (-1);
-	while (src[i])
+	while (src[i++])
 		dest[i] = src[i];
 	dest[i] = '\0';
+	free(src);
 	return (ft_strlen(src));
 }
 
@@ -63,26 +66,22 @@ char	*make_rightside(char *buffer)
 	return (rest);
 }
 
-char	*make_line(char *buffer)
+char	*make_line(char *buffer, unsigned int len)
 {
 	char			*line;
-	unsigned int	len;
 	char			*rightside;
 	unsigned int	i;
 
-	len = ft_strlen(buffer);
-	line = ft_substr(buffer, BUFFER_SIZE);
-	if (!line)
-		return (free_str(line));
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (buffer[i] == '\n')
 	{
+		line = ft_substr(buffer, i + 1);
+		if (!line)
+			return (free_str(line));
 		ft_memmove(buffer, buffer + i + 1);
-		line[i + 1] = '\0';
-		free(buffer);
-		if (!rightside)
-			return (free_str(rightside));
+		while (i < len)
+			buffer[i++] = '\0';
 	}
 	else
 	{
@@ -104,17 +103,26 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static char		*buffer;
-	char			*rightside;
-	unsigned int	i;
 	unsigned int	len;
 
 	if (BUFFER_SIZE <= 0)
 		return (0);
-	buffer = malloc(BUFFER_SIZE + 1);
+	len = ft_strlen(buffer);
 	if (!buffer)
-		return (NULL);
-	buffer[BUFFER_SIZE] = '\0';
-	if (read(fd, buffer, BUFFER_SIZE) <= 0)
-		return (NULL);
+	{
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (!buffer)
+			return (NULL);
+		if (read(fd, buffer, BUFFER_SIZE) <= 0)
+			return (NULL);
+		buffer[BUFFER_SIZE] = '\0';
+	}
+	else
+	{
+		buffer = ft_substr(buffer, len * 2);
+		if (!buffer)
+			return (NULL);
+	}
+	line = make_line(buffer, len);
 	return (line);
 }
