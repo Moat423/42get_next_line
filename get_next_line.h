@@ -19,4 +19,7 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
+int	ft_memmove(char *dest, char *src);
+char	*free_str(char *str);
+unsigned int	ft_strlen(char *str);
 #endif //GET_NEXT_LINE_H

@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmeubrin <lmeubrin@student.42berlin.       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/24 15:30:22 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:32:21 by lmeubrin         ###   ########.fr       */
+/*   Created: 2024/05/27 18:25:59 by lmeubrin          #+#    #+#             */
+/*   Updated: 2024/05/27 18:32:19 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-int	ft_memmove(char *dest, char *src)
+#define BUFFER_SIZE = 10
+
+int	main(void)
 {
-	int	i;
+	int	test1;
 
-	i = 0;
-	if (!dest)
-		return (-1);
-	while (src[i++])
-		dest[i] = src[i];
-	dest[i] = '\0';
-	free(src);
-	return (ft_strlen(src));
-}
-
-char	*free_str(char *str)
-{
-	free(str);
-	return (NULL);
+	test1 = open(test1, r);
+	while (get_next_line)
 }

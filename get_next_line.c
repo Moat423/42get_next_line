@@ -39,31 +39,20 @@ unsigned int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_memmove(char *dest, char *src)
+char	*make_rightside(char *buffer, unsigned int len)
 {
-	int	i;
+	char	*rightside;
 
-	i = 0;
-	if (!dest)
-		return (-1);
-	while (src[i++])
-		dest[i] = src[i];
-	dest[i] = '\0';
-	free(src);
-	return (ft_strlen(src));
-}
-
-char	*free_str(char *str)
-{
-	free(str);
-	return (NULL);
-}
-
-char	*make_rightside(char *buffer)
-{
-	char	*rest;
-
-	return (rest);
+	{
+		rightside = ft_substr(buffer, len);
+		if (!rightside)
+			return (NULL);
+		buffer = ft_substr(rightside, BUFFER_SIZE * 2 + 1);
+		if (!buffer)
+			return (NULL);
+		free(rightside);
+	}
+	return (rightside);
 }
 
 char	*make_line(char *buffer, unsigned int len)
@@ -84,18 +73,7 @@ char	*make_line(char *buffer, unsigned int len)
 			buffer[i++] = '\0';
 	}
 	else
-	{
-		rightside = ft_substr(buffer, len);
-		if (!rightside)
-			return (NULL);
-	}
-	if (rightside)
-	{
-		buffer = ft_substr(rightside, BUFFER_SIZE * 2 + 1);
-		if (!buffer)
-			return (NULL);
-		free(rightside);
-	}
+		make_rightside(buffer, len);
 	return (line);
 }
 
