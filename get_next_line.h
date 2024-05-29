@@ -18,8 +18,10 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-char	*get_next_line(int fd);
-int	ft_memmove(char *dest, char *src);
-char	*free_str(char *str);
+char			*get_next_line(int fd);
+int				ft_memmove(char *dest, char *src);
+char			*free_str(char *str);
 unsigned int	ft_strlen(char *str);
+unsigned int	ft_realloc(char *str, unsigned int start, unsigned int len);
+char			*make_line(char *buffer, int fd);
 #endif //GET_NEXT_LINE_H

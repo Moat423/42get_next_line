@@ -21,24 +21,16 @@ char	*ft_substr(char *src, unsigned int len)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
-	while (src[i] && i++ < len)
+	while (src[i] && i < len)
+	{
 		dest[i] = src[i];
+		i++;
+	}
 	dest[i] = '\0';
 	return (dest);
 }
 
-unsigned int	ft_strlen(char *str)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] && str[i] != '\n')
-		i++;
-	return (i);
-}
-
+/*
 char	*make_rightside(char *buffer, unsigned int len)
 {
 	char	*rightside;
@@ -54,13 +46,14 @@ char	*make_rightside(char *buffer, unsigned int len)
 	}
 	return (rightside);
 }
+*/
 
-char	*make_line(char *buffer, unsigned int len)
+char	*make_line(char *buffer, int fd)
 {
 	char			*line;
-	char			*rightside;
 	unsigned int	i;
 
+	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (buffer[i] == '\n')
@@ -69,12 +62,35 @@ char	*make_line(char *buffer, unsigned int len)
 		if (!line)
 			return (free_str(line));
 		ft_memmove(buffer, buffer + i + 1);
-		while (i < len)
-			buffer[i++] = '\0';
+		//while (i < len)
+		//	buffer[i++] = '\0';
+		return (line);
 	}
 	else
-		make_rightside(buffer, len);
-	return (line);
+		get_next_line(fd);
+	return (NULL);
+}
+
+//reallocates memory exponentially bigger than str, 
+//return: where copied string terminated
+unsigned int	ft_realloc(char *buffer, unsigned int start, unsigned int len)
+{
+	char			*save;
+	unsigned int	bufferlen;
+	unsigned int	init_len;
+
+	bufferlen = ft_strlen(buffer);
+	save = NULL;
+	if (bufferlen < len)
+		init_len = len * 2;
+	else
+		init_len = bufferlen * 2;
+	save = ft_substr(buffer + start, init_len);
+	if (!save)
+		return (0);
+	free(buffer);
+	*buffer = *save;
+	return (bufferlen);
 }
 
 char	*get_next_line(int fd)
@@ -83,24 +99,31 @@ char	*get_next_line(int fd)
 	static char		*buffer;
 	unsigned int	len;
 
-	if (BUFFER_SIZE <= 0)
+	buffer = NULL;
+	line = NULL;
+	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (0);
-	len = ft_strlen(buffer);
-	if (!buffer)
+	if (buffer)
+	{
+		len = ft_realloc(buffer, 0, BUFFER_SIZE);
+		if (!len || read(fd, buffer + len, BUFFER_SIZE) <= 0)
+			return (NULL);
+		//buffer[len + BUFFER_SIZE] = '\0';
+	}
+	else
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (!buffer)
 			return (NULL);
-		if (read(fd, buffer, BUFFER_SIZE) <= 0)
+		len = read(fd, buffer, BUFFER_SIZE);
+		//buffer[BUFFER_SIZE] = '\0';
+		if (len <= 0)
+		{
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
-		buffer[BUFFER_SIZE] = '\0';
+		}
 	}
-	else
-	{
-		buffer = ft_substr(buffer, len * 2);
-		if (!buffer)
-			return (NULL);
-	}
-	line = make_line(buffer, len);
+	line = make_line(buffer, fd);
 	return (line);
 }
