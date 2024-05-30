@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmeubrin <lmeubrin@student.42berlin.       +#+  +:+       +#+        */
+/*   By: lmeubrin <lmeubrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:28:08 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:38:16 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/05/30 11:09:11 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ char			*get_next_line(int fd);
 int				ft_memmove(char *dest, char *src);
 char			*free_str(char *str);
 unsigned int	ft_strlen(char *str);
-unsigned int	ft_realloc(char *str, unsigned int start, unsigned int len);
-char			*make_line(char *buffer, int fd);
+long long       ft_realloc(char **str, unsigned int start, unsigned int len);
+char			*make_line(char *buffer);
 #endif //GET_NEXT_LINE_H

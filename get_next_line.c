@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmeubrin <lmeubrin@student.42berlin.       +#+  +:+       +#+        */
+/*   By: lmeubrin <lmeubrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 11:45:47 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/05/27 12:56:59 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/05/30 11:39:49 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*make_rightside(char *buffer, unsigned int len)
 }
 */
 
-char	*make_line(char *buffer, int fd)
+char	*make_line(char *buffer)
 {
 	char			*line;
 	unsigned int	i;
@@ -66,64 +66,64 @@ char	*make_line(char *buffer, int fd)
 		//	buffer[i++] = '\0';
 		return (line);
 	}
-	else
-		get_next_line(fd);
 	return (NULL);
 }
 
 //reallocates memory exponentially bigger than str, 
 //return: where copied string terminated
-unsigned int	ft_realloc(char *buffer, unsigned int start, unsigned int len)
+long long	ft_realloc(char **buffer, unsigned int start, unsigned int len)
 {
 	char			*save;
 	unsigned int	bufferlen;
 	unsigned int	init_len;
 
-	bufferlen = ft_strlen(buffer);
+	if (!buffer)
+	{
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (!buffer)
+			return (-1);
+		return (0);
+	}		
+	bufferlen = start; 
 	save = NULL;
 	if (bufferlen < len)
 		init_len = len * 2;
 	else
 		init_len = bufferlen * 2;
-	save = ft_substr(buffer + start, init_len);
+	save = ft_substr(*buffer + start, init_len - start);
 	if (!save)
-		return (0);
-	free(buffer);
-	*buffer = *save;
-	return (bufferlen);
+		return (-1);
+	free(*buffer);
+	*buffer = malloc(init_len + 1);
+	if (!*buffer)
+		return (-1);
+	ft_memmove(*buffer, save);
+	free(save);
+	return (bufferlen - start);
 }
 
 char	*get_next_line(int fd)
 {
 	char			*line;
 	static char		*buffer;
-	unsigned int	len;
+	int				readlen;
+	long long 		len;
 
 	buffer = NULL;
 	line = NULL;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (0);
-	if (buffer)
+	len = ft_realloc(&buffer, ft_strlen(buffer), BUFFER_SIZE);
+	if (len < 0)
+		return (NULL);
+	while ((readlen = read(fd, buffer +len, BUFFER_SIZE) > 0))
 	{
-		len = ft_realloc(buffer, 0, BUFFER_SIZE);
-		if (!len || read(fd, buffer + len, BUFFER_SIZE) <= 0)
-			return (NULL);
-		//buffer[len + BUFFER_SIZE] = '\0';
+		buffer[len + readlen] = '\0';
+		line = make_line(buffer);
+		if (line)
+			return (line);
 	}
-	else
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return (NULL);
-		len = read(fd, buffer, BUFFER_SIZE);
-		//buffer[BUFFER_SIZE] = '\0';
-		if (len <= 0)
-		{
-			free(buffer);
-			buffer = NULL;
-			return (NULL);
-		}
-	}
-	line = make_line(buffer, fd);
-	return (line);
+	if (len <= 0)
+		return (free_str(buffer));
+	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmeubrin <lmeubrin@student.42berlin.       +#+  +:+       +#+        */
+/*   By: lmeubrin <lmeubrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:30:22 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:32:21 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/05/30 11:15:21 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_memmove(char *dest, char *src)
 		dest[i] = src[i];
 	dest[i] = '\0';
 	free(src);
-	return (ft_strlen(src));
+	return (ft_strlen(dest));
 }
 
 char	*free_str(char *str)
