@@ -17,11 +17,12 @@
 # include <stddef.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <stdio.h>
 
 char			*get_next_line(int fd);
 int				ft_memmove(char *dest, char *src);
 char			*free_str(char *str);
-unsigned int	ft_strlen(char *str);
-long long       ft_realloc(char **str, unsigned int start, unsigned int len);
+unsigned long	ft_strlen(char *str);
+//long long       ft_realloc(char **str, unsigned int start, unsigned int len);
 char			*make_line(char *buffer);
 #endif //GET_NEXT_LINE_H

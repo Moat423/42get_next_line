@@ -17,6 +17,8 @@ char	*ft_substr(char *src, unsigned int len)
 	char			*dest;
 	unsigned int	i;
 
+	if (!src)
+		return (NULL);
 	i = 0;
 	dest = malloc(len + 1);
 	if (!dest)
@@ -71,7 +73,7 @@ char	*make_line(char *buffer)
 
 //reallocates memory exponentially bigger than str, 
 //return: where copied string terminated
-long long	ft_realloc(char **buffer, unsigned int start, unsigned int len)
+char	*ft_realloc(char *buffer, unsigned int start, unsigned int len)
 {
 	char			*save;
 	unsigned int	bufferlen;
@@ -81,25 +83,24 @@ long long	ft_realloc(char **buffer, unsigned int start, unsigned int len)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (!buffer)
-			return (-1);
-		return (0);
+			return (NULL);
+		return (buffer);
 	}		
 	bufferlen = start; 
-	save = NULL;
 	if (bufferlen < len)
 		init_len = len * 2;
 	else
 		init_len = bufferlen * 2;
-	save = ft_substr(*buffer + start, init_len - start);
+	save = ft_substr(buffer + start, init_len - start);
 	if (!save)
-		return (-1);
-	free(*buffer);
-	*buffer = malloc(init_len + 1);
-	if (!*buffer)
-		return (-1);
-	ft_memmove(*buffer, save);
+		return (NULL);
+	free(buffer);
+	buffer = malloc(init_len + 1);
+	if (!buffer)
+		return (NULL);
+	ft_memmove(buffer, save);
 	free(save);
-	return (bufferlen - start);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
@@ -107,23 +108,28 @@ char	*get_next_line(int fd)
 	char			*line;
 	static char		*buffer;
 	int				readlen;
-	long long 		len;
+	unsigned long	len;
 
-	buffer = NULL;
 	line = NULL;
+	readlen = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (0);
-	len = ft_realloc(&buffer, ft_strlen(buffer), BUFFER_SIZE);
+	buffer = ft_realloc(buffer, ft_strlen(buffer), BUFFER_SIZE);
+	len = ft_strlen(buffer);
 	if (len < 0)
 		return (NULL);
-	while ((readlen = read(fd, buffer +len, BUFFER_SIZE) > 0))
+	printf("buffer: %s\n", buffer);
+	printf("&buffer: %p\n", &buffer);
+	printf("buffer pointer: %p\n", buffer);
+	readlen = read(fd, buffer, BUFFER_SIZE);
+	printf("buffer: %s\n", buffer);
+	printf("readlen: %d\n", readlen);
+	while ((readlen > 0))
 	{
 		buffer[len + readlen] = '\0';
 		line = make_line(buffer);
 		if (line)
 			return (line);
 	}
-	if (len <= 0)
-		return (free_str(buffer));
-	return (NULL);
+	return (free_str(buffer));
 }

@@ -28,11 +28,12 @@ int	ft_memmove(char *dest, char *src)
 
 char	*free_str(char *str)
 {
-	free(str);
+	if (str)
+		free(str);
 	return (NULL);
 }
 
-unsigned int	ft_strlen(char *str)
+unsigned long	ft_strlen(char *str)
 {
 	unsigned int	i;
 

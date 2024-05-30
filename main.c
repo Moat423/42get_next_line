@@ -18,25 +18,29 @@
 
 int	main(void)
 {
-	int		test1fd;
+	int		testfd;
 	//int		invalidfd;
-	char	*path1;
-	//char	*path2;
+	//char	*path1;
+	char	*path2;
 	//char	*path3;
 	int		i;
 	char	*str;
+	//char	input[20];
 
 	i = 1;
-	path1 = "./testdocs/test1";
-	//path2 = "./testdocs/test2";
+	//path1 = "./testdocs/test1";
+	path2 = "./testdocs/test2";
 	//path3 = "./testdocs/test3";
-	test1fd = open(path1, O_RDONLY);
+	testfd = open(path2, O_RDONLY);
 	//invalidfd = 45;
+	printf("fd: %d\n", testfd);
+	//read(1, &input, 5);
+	//printf("input: %s", input);
 	while (i < 11)
 	{
-		str = get_next_line(test1fd);
-		printf("line %d: %s", i++, str);
+		str = get_next_line(testfd);
+		printf("line %d: %s\n", i++, str);
 		free(str);
 	}
-	close(test1fd);
+	close(testfd);
 }
