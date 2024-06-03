@@ -23,6 +23,7 @@ char	*ft_substr(char *src, unsigned int len)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
+	ft_strlcpy(dest, src, len);
 	while (src[i] && i < len)
 	{
 		dest[i] = src[i];
@@ -56,14 +57,16 @@ char	*make_line(char *buffer)
 	unsigned int	i;
 
 	i = 0;
+	if (!buffer[i])
+		return (ft_substr(buffer, 0));
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (buffer[i] == '\n')
+	if (!buffer[i] || buffer[i] == '\n')
 	{
 		line = ft_substr(buffer, i + 1);
 		if (!line)
 			return (free_str(line));
-		ft_memmove(buffer, buffer + i + 1);
+		ft_strlcpy(buffer, buffer + i + 1, i + 1);
 		//while (i < len)
 		//	buffer[i++] = '\0';
 		return (line);
@@ -72,7 +75,6 @@ char	*make_line(char *buffer)
 }
 
 //reallocates memory exponentially bigger than str, 
-//return: where copied string terminated
 char	*ft_realloc(char *buffer, unsigned int start, unsigned int len)
 {
 	char			*save;
@@ -98,7 +100,7 @@ char	*ft_realloc(char *buffer, unsigned int start, unsigned int len)
 	buffer = malloc(init_len + 1);
 	if (!buffer)
 		return (NULL);
-	ft_memmove(buffer, save);
+	ft_strlcpy(buffer, save, init_len);
 	free(save);
 	return (buffer);
 }
@@ -111,22 +113,28 @@ char	*get_next_line(int fd)
 	unsigned long	len;
 
 	line = NULL;
-	readlen = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (0);
 	buffer = ft_realloc(buffer, ft_strlen(buffer), BUFFER_SIZE);
-	len = ft_strlen(buffer);
-	if (len < 0)
+	if (!buffer)
 		return (NULL);
-	printf("buffer: %s\n", buffer);
-	printf("&buffer: %p\n", &buffer);
-	printf("buffer pointer: %p\n", buffer);
+	len = ft_strlen(buffer);
 	readlen = read(fd, buffer, BUFFER_SIZE);
-	printf("buffer: %s\n", buffer);
-	printf("readlen: %d\n", readlen);
 	while ((readlen > 0))
 	{
+		buffer = ft_realloc(buffer, ft_strlen(buffer), BUFFER_SIZE);
+		if (!buffer)
+			return (NULL);
+		readlen = read(fd, buffer + readlen, BUFFER_SIZE);
+		if (readlen < 0)
+			return (NULL);
 		buffer[len + readlen] = '\0';
+		line = make_line(buffer);
+		if (line)
+			return (line);
+	}
+	if (readlen == 0)
+	{
 		line = make_line(buffer);
 		if (line)
 			return (line);

@@ -12,17 +12,24 @@
 
 #include "get_next_line.h"
 
-int	ft_memmove(char *dest, char *src)
+int	ft_strlcpy(char *dest, char *src, unsigned int len)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	if (!dest)
 		return (-1);
-	while (src[i++])
+	if (len == 0)
+	{
+		dest[0] = '\0';
+		return (ft_strlen(src));
+	}
+	while (src[i] && (i + 1) < len)
+	{
 		dest[i] = src[i];
+		i++;
+	}
 	dest[i] = '\0';
-	free(src);
 	return (ft_strlen(dest));
 }
 

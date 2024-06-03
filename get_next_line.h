@@ -20,7 +20,7 @@
 # include <stdio.h>
 
 char			*get_next_line(int fd);
-int				ft_memmove(char *dest, char *src);
+int				ft_strlcpy(char *dest, char *src, unsigned int len);
 char			*free_str(char *str);
 unsigned long	ft_strlen(char *str);
 //long long       ft_realloc(char **str, unsigned int start, unsigned int len);
