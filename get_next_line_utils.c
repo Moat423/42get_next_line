@@ -29,17 +29,12 @@ int	ft_strlcpy(char *dest, char *src, unsigned int len)
 		dest[i] = src[i];
 		i++;
 	}
-	dest[i] = '\0';
+	while (i < len)
+		dest[i++] = '\0';
 	return (ft_strlen(dest));
 }
 
-char	*free_str(char *str)
-{
-	if (str)
-		free(str);
-	return (NULL);
-}
-
+//returns length of str or 0 if no str
 unsigned long	ft_strlen(char *str)
 {
 	unsigned int	i;
@@ -50,4 +45,64 @@ unsigned long	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+//find c in str, return pointer to c in str
+char	*ft_strchr(char *str, int c)
+{
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	while (i <= len)
+	{
+		if (str[i] == (char) c)
+			return (str + i);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*ft_substr(char *src, unsigned int len)
+{
+	char			*dest;
+	unsigned int	i;
+
+	if (!src)
+		return (NULL);
+	i = 0;
+	dest = malloc(len + 1);
+	if (!dest)
+		return (NULL);
+	ft_strlcpy(dest, src, len);
+	while (src[i] && i < len)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+void	*ft_calloc(size_t size, size_t nmemb)
+{
+	void			*ptr;
+	char			*strptr;
+	unsigned int	i;
+
+	i = 0;
+	if (size && nmemb > SIZE_MAX / size)
+		return (NULL);
+	ptr = malloc(nmemb * size);
+	strptr = ptr;
+	if (!ptr)
+		return (NULL);
+	while (i < (nmemb * size))
+	{
+		*(strptr + i++) = '\0';
+	}
+	return (ptr);
 }

@@ -18,11 +18,16 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <limits.h>
+# include <stdint.h>
 
 char			*get_next_line(int fd);
+char			*ft_strchr(char *str, int c);
 int				ft_strlcpy(char *dest, char *src, unsigned int len);
 char			*free_str(char *str);
 unsigned long	ft_strlen(char *str);
-//long long       ft_realloc(char **str, unsigned int start, unsigned int len);
-char			*make_line(char *buffer);
+char			*make_line(char *buffer, unsigned int *i);
+char			*ft_substr(char *src, unsigned int len);
+char			*ft_realloc(char *buffer, unsigned int start);
+char			*read_into( int fd, char *buffer);
 #endif //GET_NEXT_LINE_H

@@ -12,90 +12,46 @@
 
 #include "get_next_line.h"
 
-char	*ft_substr(char *src, unsigned int len)
+//used to save lines for norminette, returning and freeing in one
+char	*free_str(char *str)
 {
-	char			*dest;
-	unsigned int	i;
-
-	if (!src)
-		return (NULL);
-	i = 0;
-	dest = malloc(len + 1);
-	if (!dest)
-		return (NULL);
-	ft_strlcpy(dest, src, len);
-	while (src[i] && i < len)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	if (str)
+		free(str);
+	return (NULL);
 }
 
-
-// char	*make_rightside(char *buffer, unsigned int len)
-// {
-// 	char	*rightside;
-//
-// 	{
-// 		rightside = ft_substr(buffer, len);
-// 		if (!rightside)
-// 			return (NULL);
-// 		buffer = ft_substr(rightside, BUFFER_SIZE * 2 + 1);
-// 		if (!buffer)
-// 			return (NULL);
-// 		free(rightside);
-// 	}
-// 	return (rightside);
-// }
-
-
-char	*make_line(char *buffer)
+// allocates and writes line ending with null byte
+char	*make_line(char *buffer, unsigned int *i)
 {
 	char			*line;
-	unsigned int	i;
 
-	i = 0;
-	if (!buffer[i])
-		return (ft_substr(buffer, 0));
-	while (i + 1 < BUFFER_SIZE && buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i] || buffer[i] == '\n')
+	*i = 0;
+	if (!buffer[*i])
+		return (NULL);
+	while (buffer[*i] && buffer[*i] != '\n')
+		++*i;
+	if (!buffer[*i] || buffer[*i] == '\n')
 	{
-		line = ft_substr(buffer, i + 1);
+		line = ft_substr(buffer, *i + 1);
 		if (!line)
 			return (free_str(line));
-		ft_strlcpy(buffer, buffer + i + 1, i + 1);
 		return (line);
 	}
 	return (NULL);
 }
 
-//reallocates memory exponentially bigger than str, 
-char	*ft_realloc(char *buffer, unsigned int start, unsigned int len)
+//reallocates memory exponentially bigger than str,
+char	*ft_realloc(char *buffer, unsigned int bufferlen)
 {
 	char			*save;
-	unsigned int	bufferlen;
 	unsigned int	init_len;
 
-	if (!buffer)
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return (NULL);
-		return (buffer);
-	}
-	bufferlen = start; 
-	if (bufferlen < len)
-		init_len = len + BUFFER_SIZE;
-	else
-		init_len = bufferlen + BUFFER_SIZE;
+	init_len = bufferlen * 2 + 1;
 	save = ft_substr(buffer, BUFFER_SIZE);
 	if (!save)
 		return (NULL);
 	free(buffer);
-	buffer = malloc(init_len + 1);
+	buffer = calloc(init_len + 1, 1);
 	if (!buffer)
 		return (NULL);
 	ft_strlcpy(buffer, save, init_len);
@@ -103,53 +59,54 @@ char	*ft_realloc(char *buffer, unsigned int start, unsigned int len)
 	return (buffer);
 }
 
-char	*read_into(char *buffer, char *line, int fd, int *readlen)
+//makes and reads from fd into buffer until newline or EOF in buffer
+char	*read_into( int fd, char *buffer)
 {
 	unsigned int	len;
+	long long		readlen;
 
+	readlen = 1;
+	len = 0;
+	if (!buffer)
 	{
-		len = ft_strlen(buffer);
-		buffer = ft_realloc(buffer, len, BUFFER_SIZE);
+		buffer = calloc(BUFFER_SIZE + 1, 1);
 		if (!buffer)
 			return (NULL);
-		*readlen = read(fd, buffer + len, BUFFER_SIZE);
-		if (*readlen < 0)
-			return (free_str(buffer));
-		buffer[len + *readlen] = '\0';
-		line = make_line(buffer);
-		if (line)
-			return (line);
 	}
-	if (*readlen == 0)
+	while (!ft_strchr(buffer, '\n') && readlen > 0)
 	{
-		line = make_line(buffer);
-		if (line)
-			return (line);
+		len = ft_strlen(buffer);
+		printf("buffer before realloc:\n%s\n", buffer);
+		buffer = ft_realloc(buffer, len);
+		printf("buffer after realloc:\n%s\n", buffer);
+		readlen = read(fd, buffer + len, BUFFER_SIZE);
+		printf("buffer after read:\n%s\n", buffer);
+		if (readlen < 0)
+			return (free_str(buffer));
 	}
-	return (NULL);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static char		*buffer;
+	static char		*buffer = NULL;
 	int				readlen;
+	unsigned int	i;
 
 	line = NULL;
 	readlen = 1;
+	i = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (0);
-	if (buffer)
 	{
-		line = make_line(buffer);
-		if (line)
-			return (line);
+		if (!buffer)
+			free(buffer);
+		return (NULL);
 	}
-	while ((readlen > 0))
-	{
-		line = read_into(buffer, line, fd, &readlen);
-		if (line)
-			return (line);
-	}
-	return (free_str(buffer));
+	buffer = read_into(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = make_line(buffer, &i);
+	ft_strlcpy(buffer, buffer + i + 1, i + 1);
+	return (line);
 }
