@@ -46,8 +46,8 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 	char			*save;
 	unsigned int	init_len;
 
-	init_len = bufferlen * 2 + 1;
-	save = ft_substr(buffer, BUFFER_SIZE);
+	init_len = bufferlen + BUFFER_SIZE + 1;
+	save = ft_substr(buffer, bufferlen);
 	if (!save)
 		return (NULL);
 	free(buffer);
@@ -76,13 +76,11 @@ char	*read_into( int fd, char *buffer)
 	while (!ft_strchr(buffer, '\n') && readlen > 0)
 	{
 		len = ft_strlen(buffer);
-		printf("buffer before realloc:\n%s\n", buffer);
 		buffer = ft_realloc(buffer, len);
-		printf("buffer after realloc:\n%s\n", buffer);
 		readlen = read(fd, buffer + len, BUFFER_SIZE);
-		printf("buffer after read:\n%s\n", buffer);
 		if (readlen < 0)
 			return (free_str(buffer));
+		buffer[len + readlen] = '\0';
 	}
 	return (buffer);
 }
@@ -107,6 +105,6 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	line = make_line(buffer, &i);
-	ft_strlcpy(buffer, buffer + i + 1, i + 1);
+	ft_strlcpy(buffer, buffer + i + 1, ft_strlen(buffer) - i);
 	return (line);
 }
