@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmeubrin <lmeubrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmeubrin <lmeubrin@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 11:45:47 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:39:49 by lmeubrin         ###   ########.fr       */
+/*   Created: 2024/06/06 10:36:02 by lmeubrin          #+#    #+#             */
+/*   Updated: 2024/06/06 10:36:06 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,23 @@ char	*read_into( int fd, char *buffer)
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static char		*buffer = NULL;
+	static char		*buffer[1024] = {NULL};
 	int				readlen;
 	unsigned int	i;
 
 	line = NULL;
 	readlen = 1;
 	i = 0;
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= 1024)
 	{
-		if (!buffer)
-			free(buffer);
+		if (!buffer[fd])
+			free(buffer[fd]);
 		return (NULL);
 	}
-	buffer = read_into(fd, buffer);
-	if (!buffer)
+	buffer[fd] = read_into(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	line = make_line(buffer, &i);
-	ft_strlcpy(buffer, buffer + i + 1, ft_strlen(buffer) - i);
+	line = make_line(buffer[fd], &i);
+	ft_strlcpy(buffer[fd], buffer[fd] + i + 1, ft_strlen(buffer[fd]) - i);
 	return (line);
 }
