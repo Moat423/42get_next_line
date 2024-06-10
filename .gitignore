@@ -9,4 +9,7 @@ en.subject.pdf
 */*.gch
 *.gch
 README.md
-
+./testdocs
+main.c
+Makefile
+/objs
