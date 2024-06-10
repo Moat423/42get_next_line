@@ -87,15 +87,13 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static char		*buffer[1024] = {NULL};
-	int				readlen;
 	unsigned int	i;
 
 	line = NULL;
-	readlen = 1;
 	i = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= 1024)
 	{
-		if (!buffer[fd])
+		if (buffer[fd])
 			free(buffer[fd]);
 		return (NULL);
 	}
@@ -103,6 +101,7 @@ char	*get_next_line(int fd)
 	if (!buffer[fd])
 		return (NULL);
 	line = make_line(buffer[fd], &i);
-	ft_strlcpy(buffer[fd], buffer[fd] + i + 1, ft_strlen(buffer[fd]) - i);
+	if (i <= ft_strlen(buffer[fd]))
+		ft_strlcpy(buffer[fd], buffer[fd] + i + 1, ft_strlen(buffer[fd]) - i);
 	return (line);
 }
