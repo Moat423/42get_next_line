@@ -1,0 +1,10 @@
+*/*.o
+*/*.out
+*.out
+*.swp
+*.o
+*/*.a
+*.a
+*/*.gch
+*.gch
+/objs
