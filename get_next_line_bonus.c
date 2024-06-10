@@ -93,8 +93,12 @@ char	*get_next_line(int fd)
 	i = 0;
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= 1024)
 	{
-		if (buffer[fd])
-			free(buffer[fd]);
+		while (i < 1024)
+		{
+			if (buffer[i])
+				free(buffer[i]);
+			i++;
+		}
 		return (NULL);
 	}
 	buffer[fd] = read_into(fd, buffer[fd]);

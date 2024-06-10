@@ -27,7 +27,6 @@ char	*make_line(char *buffer, unsigned int *i)
 		line = ft_substr(buffer, *i + 1);
 	if (line)
 		return (line);
-	free(line);
 	return (NULL);
 }
 
@@ -37,6 +36,11 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 	char			*save;
 	unsigned int	init_len;
 
+	save = NULL;
+	if (!buffer)
+		buffer = (char *) ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!buffer)
+		return (NULL);
 	init_len = bufferlen + BUFFER_SIZE + 1;
 	save = ft_substr(buffer, bufferlen);
 	free(buffer);
@@ -57,17 +61,12 @@ char	*read_into( int fd, char *buffer)
 	long long		readlen;
 
 	readlen = 1;
-	len = 0;
-	if (!buffer)
-	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, 1);
-		if (!buffer)
-			return (NULL);
-	}
 	while (!ft_strchr(buffer, '\n') && readlen > 0)
 	{
 		len = ft_strlen(buffer);
 		buffer = ft_realloc(buffer, len);
+		if (!buffer)
+			return (NULL);
 		readlen = read(fd, buffer + len, BUFFER_SIZE);
 		if (readlen < 0)
 		{
