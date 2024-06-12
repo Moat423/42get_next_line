@@ -46,7 +46,7 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 	free(buffer);
 	if (!save)
 		return (NULL);
-	buffer = ft_calloc(init_len + 1, 1);
+	buffer = ft_calloc(init_len, 1);
 	if (!buffer)
 		return (NULL);
 	ft_strlcpy(buffer, save, init_len);
@@ -97,6 +97,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = make_line(buffer, &i);
 	if (i <= ft_strlen(buffer))
-		ft_strlcpy(buffer, buffer + i + 1, ft_strlen(buffer) - i);
+		ft_strlcpy(buffer, buffer + i + 1, ft_strlen(buffer + i));
+	if (buffer[0] == 0)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
 	return (line);
 }
