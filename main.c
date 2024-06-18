@@ -27,33 +27,38 @@ int	main(void)
 	int		i;
 	char	*str;
 	//char	input[20];
-
 	i = 1;
-	path1 = "./testdocs/test1";
-	path2 = "./testdocs/test2";
+	path1 = "./testdocs/multiple_nl.txt";
+	path2 = "./testdocs/only_nl.txt";
 	path3 = "./testdocs/test3";
 	testfd = open(path1, O_RDONLY);
 	testfd2 = open(path2, O_RDONLY);
 	testfd3 = open(path3, O_RDONLY);
 	invalidfd = 45;
 	//read(1, &input, 5);
-	//printf("input: %s", input);
-	while (i < 20)
+	//printf("input: %s", input)
+	while (i < 6)
 	{
-		printf("fd: %d\n", testfd);
+		printf("fd: %d, test1\n", testfd);
 		str = get_next_line(testfd);
-		printf("line %d: %s\n", i++, str);
+		printf("line %d: %s\n", i, str);
 		free(str);
-		printf("fd: %d\n", testfd2);
-		str = get_next_line(testfd2);
-		printf("line %d: %s\n", i++, str);
-		free(str);
-		printf("fd: %d\n", testfd3);
-		str = get_next_line(testfd3);
-		printf("line %d: %s\n", i++, str);
-		free(str);
+		// printf("fd: %d, test2\n", testfd2);
+		// str = get_next_line(testfd2);
+		// printf("line %d: %s\n", i, str);
+		// free(str);
+		// printf("fd: %d,test3\n", testfd3);
+		// str = get_next_line(testfd3);
+		// printf("line %d: %s\n", i, str);
+		// free(str);
+		i++;
 	}
+	// printf("fd : NULL\n", NULL);
+	// str = get_next_line(9);
+	// printf("line 1: %s\n", str);
 	close(testfd);
+//	close(testfd2);
+//	close(testfd3);
 }
 
 // non Bonus

@@ -32,4 +32,5 @@ char			*make_line(char *buffer, unsigned int *i);
 char			*ft_substr(char *src, unsigned int len);
 char			*ft_realloc(char *buffer, unsigned int start);
 char			*read_into( int fd, char *buffer);
+void			*ft_calloc(size_t size, size_t nmemb);
 #endif //GET_NEXT_LINE_BONUS_H

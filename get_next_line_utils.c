@@ -71,6 +71,7 @@ char	*ft_substr(char *src, unsigned int len)
 	char			*dest;
 	unsigned int	i;
 
+	dest = NULL;
 	if (!src)
 		return (NULL);
 	i = 0;
@@ -90,19 +91,20 @@ char	*ft_substr(char *src, unsigned int len)
 void	*ft_calloc(size_t size, size_t nmemb)
 {
 	void			*ptr;
-	char			*strptr;
-	unsigned int	i;
+	unsigned char	*strptr;
+	size_t			i;
 
+	ptr = NULL;
 	i = 0;
 	if (size && nmemb > SIZE_MAX / size)
 		return (NULL);
 	ptr = malloc(nmemb * size);
-	strptr = ptr;
 	if (!ptr)
 		return (NULL);
+	strptr = (unsigned char *)ptr;
 	while (i < (nmemb * size))
 	{
-		*(strptr + i++) = '\0';
+		*(strptr + i++) = 0;
 	}
 	return (ptr);
 }
