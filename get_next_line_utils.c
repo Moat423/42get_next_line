@@ -12,61 +12,61 @@
 
 #include "get_next_line.h"
 
-int	ft_strlcpy(char *dest, char *src, unsigned int len)
+int	ft_strlcpy(char *dst, char *src, unsigned int len)
 {
 	unsigned int	i;
 
 	i = 0;
-	if (!dest)
+	if (!dst)
 		return (-1);
 	if (len == 0)
 	{
-		dest[0] = '\0';
+		dst[0] = '\0';
 		return (ft_strlen(src));
 	}
 	while (src[i] && (i + 1) < len)
 	{
-		dest[i] = src[i];
+		dst[i] = src[i];
 		i++;
 	}
 	while (i < len)
-		dest[i++] = '\0';
-	return (ft_strlen(dest));
+		dst[i++] = '\0';
+	return (ft_strlen(dst));
 }
 
 //returns length of str or 0 if no str
-unsigned long	ft_strlen(char *str)
+unsigned long	ft_strlen(const char *s)
 {
 	unsigned int	i;
 
 	i = 0;
-	if (!str)
+	if (!s)
 		return (0);
-	while (str[i])
+	while (s[i])
 		i++;
 	return (i);
 }
 
 //find c in str, return pointer to c in str
-char	*ft_strchr(char *str, int c)
+char	*ft_strchr(char *s, int c)
 {
 	size_t	i;
 	size_t	len;
 
 	i = 0;
-	if (!str)
+	if (!s)
 		return (NULL);
-	len = ft_strlen(str);
+	len = ft_strlen(s);
 	while (i <= len)
 	{
-		if (str[i] == (char) c)
-			return (str + i);
+		if (s[i] == (char) c)
+			return (s + i);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*ft_substr(char *src, unsigned int len)
+char	*ft_substr_diff(char *src, unsigned int len)
 {
 	char			*dest;
 	unsigned int	i;
@@ -88,7 +88,7 @@ char	*ft_substr(char *src, unsigned int len)
 	return (dest);
 }
 
-void	*ft_calloc(size_t size, size_t nmemb)
+void	*ft_calloc(size_t count, size_t size)
 {
 	void			*ptr;
 	unsigned char	*strptr;
@@ -96,13 +96,13 @@ void	*ft_calloc(size_t size, size_t nmemb)
 
 	ptr = NULL;
 	i = 0;
-	if (size && nmemb > SIZE_MAX / size)
+	if (size && count > SIZE_MAX / size)
 		return (NULL);
-	ptr = malloc(nmemb * size);
+	ptr = malloc(count * size);
 	if (!ptr)
 		return (NULL);
 	strptr = (unsigned char *)ptr;
-	while (i < (nmemb * size))
+	while (i < (count * size))
 	{
 		*(strptr + i++) = 0;
 	}

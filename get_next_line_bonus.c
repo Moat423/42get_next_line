@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 // allocates and writes line ending with null byte
 char	*make_line(char *buffer, unsigned int *i)

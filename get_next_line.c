@@ -24,7 +24,7 @@ char	*make_line(char *buffer, unsigned int *i)
 	while (buffer[*i] && buffer[*i] != '\n')
 		++*i;
 	if (!buffer[*i] || buffer[*i] == '\n')
-		line = ft_substr(buffer, *i + 1);
+		line = ft_substr_diff(buffer, *i + 1);
 	if (line)
 		return (line);
 	return (NULL);
@@ -42,7 +42,7 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 	if (!buffer)
 		return (NULL);
 	init_len = bufferlen + BUFFER_SIZE + 1;
-	save = ft_substr(buffer, bufferlen);
+	save = ft_substr_diff(buffer, bufferlen);
 	free(buffer);
 	if (!save)
 		return (NULL);
