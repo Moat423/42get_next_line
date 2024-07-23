@@ -48,19 +48,19 @@ unsigned long	ft_strlen(char *str)
 }
 
 //find c in str, return pointer to c in str
-char	*ft_strchr(char *str, int c)
+char	*ft_strchr(char *s, int c)
 {
 	size_t	i;
 	size_t	len;
 
 	i = 0;
-	if (!str)
+	if (!s)
 		return (NULL);
-	len = ft_strlen(str);
+	len = ft_strlen(s);
 	while (i <= len)
 	{
-		if (str[i] == (char) c)
-			return (str + i);
+		if (s[i] == (char) c)
+			return (s + i);
 		i++;
 	}
 	return (NULL);

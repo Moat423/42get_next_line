@@ -25,7 +25,7 @@
 # endif //BUFFER_SIZE
 
 char			*get_next_line(int fd);
-char			*ft_strchr(char *str, int c);
+char			*ft_strchr(char *s, int c);
 int				ft_strlcpy(char *dest, char *src, unsigned int len);
 unsigned long	ft_strlen(char *str);
 char			*make_line(char *buffer, unsigned int *i);
