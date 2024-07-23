@@ -25,11 +25,12 @@
 # endif //BUFFER_SIZE
 
 char			*get_next_line(int fd);
-char			*ft_strchr(char *str, int c);
-int				ft_strlcpy(char *dest, char *src, unsigned int len);
-unsigned long	ft_strlen(char *str);
+char			*ft_strchr(char *s, int c);
+int				ft_strlcpy(char *dst, char *src, unsigned int len);
+unsigned long	ft_strlen(const char *s);
 char			*make_line(char *buffer, unsigned int *i);
-char			*ft_substr(char *src, unsigned int len);
+char			*ft_substr_diff(char *src, unsigned int len);
 char			*ft_realloc(char *buffer, unsigned int start);
 char			*read_into( int fd, char *buffer);
+void			*ft_calloc(size_t count, size_t size);
 #endif //GET_NEXT_LINE_H
