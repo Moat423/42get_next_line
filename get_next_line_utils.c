@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-int	ft_strlcpy(char *dst, char *src, unsigned int len)
+int	gnl_strlcpy(char *dst, char *src, unsigned int len)
 {
 	unsigned int	i;
 
@@ -22,7 +22,7 @@ int	ft_strlcpy(char *dst, char *src, unsigned int len)
 	if (len == 0)
 	{
 		dst[0] = '\0';
-		return (ft_strlen(src));
+		return (gnl_strlen(src));
 	}
 	while (src[i] && (i + 1) < len)
 	{
@@ -31,11 +31,11 @@ int	ft_strlcpy(char *dst, char *src, unsigned int len)
 	}
 	while (i < len)
 		dst[i++] = '\0';
-	return (ft_strlen(dst));
+	return (gnl_strlen(dst));
 }
 
 //returns length of str or 0 if no str
-unsigned long	ft_strlen(const char *s)
+unsigned long	gnl_strlen(const char *s)
 {
 	unsigned int	i;
 
@@ -48,7 +48,7 @@ unsigned long	ft_strlen(const char *s)
 }
 
 //find c in str, return pointer to c in str
-char	*ft_strchr(const char *s, int c)
+char	*gnl_strchr(const char *s, int c)
 {
 	size_t	i;
 	size_t	len;
@@ -56,7 +56,7 @@ char	*ft_strchr(const char *s, int c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	len = ft_strlen(s);
+	len = gnl_strlen(s);
 	while (i <= len)
 	{
 		if (s[i] == (char) c)
@@ -78,7 +78,7 @@ char	*ft_substr_diff(char *src, unsigned int len)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
-	ft_strlcpy(dest, src, len);
+	gnl_strlcpy(dest, src, len);
 	while (src[i] && i < len)
 	{
 		dest[i] = src[i];
@@ -88,7 +88,7 @@ char	*ft_substr_diff(char *src, unsigned int len)
 	return (dest);
 }
 
-void	*ft_calloc(size_t count, size_t size)
+void	*gnl_calloc(size_t count, size_t size)
 {
 	void			*ptr;
 	unsigned char	*strptr;

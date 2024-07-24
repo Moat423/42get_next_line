@@ -38,7 +38,7 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 
 	save = NULL;
 	if (!buffer)
-		buffer = (char *) ft_calloc(BUFFER_SIZE + 1, 1);
+		buffer = (char *) gnl_calloc(BUFFER_SIZE + 1, 1);
 	if (!buffer)
 		return (NULL);
 	init_len = bufferlen + BUFFER_SIZE + 1;
@@ -46,10 +46,10 @@ char	*ft_realloc(char *buffer, unsigned int bufferlen)
 	free(buffer);
 	if (!save)
 		return (NULL);
-	buffer = ft_calloc(init_len, 1);
+	buffer = gnl_calloc(init_len, 1);
 	if (!buffer)
 		return (NULL);
-	ft_strlcpy(buffer, save, init_len);
+	gnl_strlcpy(buffer, save, init_len);
 	free(save);
 	return (buffer);
 }
@@ -61,9 +61,9 @@ char	*read_into( int fd, char *buffer)
 	long long		readlen;
 
 	readlen = 1;
-	while (!ft_strchr(buffer, '\n') && readlen > 0)
+	while (!gnl_strchr(buffer, '\n') && readlen > 0)
 	{
-		len = ft_strlen(buffer);
+		len = gnl_strlen(buffer);
 		buffer = ft_realloc(buffer, len);
 		if (!buffer)
 			return (NULL);
@@ -96,8 +96,8 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	line = make_line(buffer, &i);
-	if (i <= ft_strlen(buffer))
-		ft_strlcpy(buffer, buffer + i + 1, ft_strlen(buffer + i));
+	if (i <= gnl_strlen(buffer))
+		gnl_strlcpy(buffer, buffer + i + 1, gnl_strlen(buffer + i));
 	if (buffer[0] == 0)
 	{
 		free(buffer);
