@@ -6,14 +6,14 @@
 /*   By: lmeubrin <lmeubrin@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:57:32 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/12/16 14:26:40 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:33:19 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "get_next_line.h"
 
-void	suppress_cntl_chars(void)
+static void	suppress_cntl_chars(void)
 {
 	struct termios	term;
 
@@ -22,7 +22,7 @@ void	suppress_cntl_chars(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-void	restore_cntl_chars(void)
+static void	restore_cntl_chars(void)
 {
 	struct termios	term;
 
