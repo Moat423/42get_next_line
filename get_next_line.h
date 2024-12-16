@@ -6,7 +6,7 @@
 /*   By: lmeubrin <lmeubrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:28:08 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/12/16 14:33:05 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:52:53 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ char			*read_into( int fd, char *buffer);
 void			*gnl_calloc(size_t count, size_t size);
 
 char			*ft_gnl(int fd, const char *prompt);
+void			restore_cntl_chars(void);
 #endif //GET_NEXT_LINE_H

@@ -6,7 +6,7 @@
 /*   By: lmeubrin <lmeubrin@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:57:32 by lmeubrin          #+#    #+#             */
-/*   Updated: 2024/12/16 14:33:19 by lmeubrin         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:52:33 by lmeubrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	suppress_cntl_chars(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-static void	restore_cntl_chars(void)
+void	restore_cntl_chars(void)
 {
 	struct termios	term;
 
